@@ -17,7 +17,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const secret = searchParams.get("secret")
 
-    if (secret !== process.env.SETUP_SECRET && secret !== "schf-setup-2024") {
+    // Allow access with the hardcoded secret
+    if (secret !== "schf-setup-2024") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
