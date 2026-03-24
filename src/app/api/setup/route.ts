@@ -12,12 +12,11 @@ async function hashPassword(password: string): Promise<string> {
   })
 }
 
-export async function POST(request: Request) {
+export async function GET(request: Request) {
   try {
-    const body = await request.json()
-    const { secret } = body
+    const { searchParams } = new URL(request.url)
+    const secret = searchParams.get("secret")
 
-    // Simple security check - replace with your own secret
     if (secret !== process.env.SETUP_SECRET && secret !== "schf-setup-2024") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -198,4 +197,8 @@ export async function POST(request: Request) {
       { status: 500 }
     )
   }
+}
+
+export async function POST(request: Request) {
+  return GET(request)
 }
